@@ -1,16 +1,15 @@
 from numpy import amin, absolute, sqrt, power, argsort
-from sys import maxsize
 
 class RIM(object):
     """docstring for Reference Ideal Method"""
     
-    def __init__(self,matrix,criteria_range,reference_ideal,wheights):
+    def __init__(self,matrix,criteria_range,reference_ideal,weights):
         self.matrix = matrix 
         self.columns = len(matrix) #j
         self.rows = len(matrix[0]) #i
         self.criteria_range = criteria_range #[A,B]
         self.reference_ideal = reference_ideal #[C,D]
-        self.wheights = wheights
+        self.weights = weights
         self.Iplus = []
         self.Iminus = []
         self.rank = []
@@ -40,13 +39,13 @@ class RIM(object):
     def weighted_normalized_matrix(self):
         for j in range(0,self.columns):
             for i in range(0,self.rows):
-                self.matrix[j][i] = self.matrix[j][i]*self.wheights[j]
+                self.matrix[j][i] = self.matrix[j][i]*self.weights[j]
     
     def I_plus(self):
         for i in range(0,self.rows):
             temp_Iplus = 0
             for j in range(0,self.columns):
-                temp_Iplus += power((self.matrix[j][i]-self.wheights[j]),2)
+                temp_Iplus += power((self.matrix[j][i]-self.weights[j]),2)
             self.Iplus.append(sqrt(temp_Iplus))
     
     def I_minus(self):
@@ -58,8 +57,7 @@ class RIM(object):
     
     def Rank_i(self):
         for i in range(0,self.rows):
-            R = self.Iminus[i]/(self.Iplus[i]+self.Iminus[i])
-            self.rank.append(R)
+            self.rank.append(self.Iminus[i]/(self.Iplus[i]+self.Iminus[i]))
     
     def print_solution(self):
         print(self.rank)
@@ -79,9 +77,9 @@ criteria_range = [[23,60],[0,15],[0,10],[1,3],[1,3],[1,5]]
 
 reference_ideal = [[30,35],[10,15],[0,0],[3,3],[3,3],[4,5]]
 
-wheights = [0.2262,0.2143,0.1786,0.1429,0.1190,0.1190]
+weights = [0.2262,0.2143,0.1786,0.1429,0.1190,0.1190]
 
-decision = RIM(matrix,criteria_range,reference_ideal,wheights)
+decision = RIM(matrix,criteria_range,reference_ideal,weights)
 
 decision.solve()
 
