@@ -1,4 +1,4 @@
-from numpy import amin, absolute, sqrt, power, argsort
+from numpy import amin, absolute, sqrt, power
 
 class RIM(object):
     """docstring for Reference Ideal Method"""
@@ -10,8 +10,8 @@ class RIM(object):
         self.criteria_range = criteria_range #[A,B]
         self.reference_ideal = reference_ideal #[C,D]
         self.weights = weights
-        self.Iplus = []
-        self.Iminus = []
+        self.iplus = []
+        self.iminus = []
         self.rank = []
         # criar teste para avaliar ordem dos vetores está correta
         # e avaliar se há mesmo numero de ranges que colunas (critérios)
@@ -29,7 +29,6 @@ class RIM(object):
             return 1 - self.d_min(x,j)/absolute(self.reference_ideal[j][1]-self.criteria_range[j][1])
         else:
             print('Reference Ideal isn\'t contained in the range [A,B]')
-        #    quit() 
     
     def normalization(self):
         for j in range(0,self.columns):
@@ -41,23 +40,23 @@ class RIM(object):
             for i in range(0,self.rows):
                 self.matrix[j][i] = self.matrix[j][i]*self.weights[j]
     
-    def I_plus(self):
+    def i_plus(self):
         for i in range(0,self.rows):
-            temp_Iplus = 0
+            temp_iplus = 0
             for j in range(0,self.columns):
-                temp_Iplus += power((self.matrix[j][i]-self.weights[j]),2)
-            self.Iplus.append(sqrt(temp_Iplus))
+                temp_iplus += power((self.matrix[j][i]-self.weights[j]),2)
+            self.iplus.append(sqrt(temp_iplus))
     
-    def I_minus(self):
+    def i_minus(self):
         for i in range(0,self.rows):
-            temp_Iminus = 0
+            temp_iminus = 0
             for j in range(0,self.columns):
-                temp_Iminus += power(self.matrix[j][i],2)
-            self.Iminus.append(sqrt(temp_Iminus))
+                temp_iminus += power(self.matrix[j][i],2)
+            self.iminus.append(sqrt(temp_iminus))
     
-    def Rank_i(self):
+    def rank_i(self):
         for i in range(0,self.rows):
-            self.rank.append(self.Iminus[i]/(self.Iplus[i]+self.Iminus[i]))
+            self.rank.append(self.iminus[i]/(self.iplus[i]+self.iminus[i]))
     
     def print_solution(self):
         print(self.rank)
@@ -65,9 +64,9 @@ class RIM(object):
     def solve(self):
         self.normalization()
         self.weighted_normalized_matrix()
-        self.I_plus()
-        self.I_minus()
-        self.Rank_i()
+        self.i_plus()
+        self.i_minus()
+        self.rank_i()
         self.print_solution()
 
 
