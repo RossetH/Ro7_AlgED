@@ -1,4 +1,4 @@
-from numpy import array, power, sqrt, zeros, absolute
+from numpy import array, power, sqrt, zeros, absolute, empty_like, argsort
 
 class ELECTRE(object):
     """docstring for ELimination and Et Chouce Translating REality (ELECTRE)"""
@@ -9,12 +9,12 @@ class ELECTRE(object):
         self.alternatives = self.matrix.shape[0]
         self.criterias = self.matrix.shape[1] 
         self.nb_list = non_benefitial_att #list
-        self.norm_matrix = zeros([self.alternatives,self.criterias])
-        self.wn_matrix = zeros([self.alternatives,self.criterias])
+        self.norm_matrix = empty_like(matrix)
+        self.wn_matrix = empty_like(matrix)
         self.concordance_matrix = zeros([self.alternatives,self.alternatives])
-        self.discordance_matrix = zeros([self.alternatives,self.alternatives])
+        self.discordance_matrix = empty_like(self.concordance_matrix)
         self.pure_concordance_matrix = zeros([self.alternatives,1])
-        self.pure_discordance_matrix = zeros([self.alternatives,1])        
+        self.pure_discordance_matrix = zeros([self.alternatives,1])
 
     def matrix_normalize(self):
         #Evaluate the Eq.(11) denominator for each column
@@ -62,7 +62,7 @@ class ELECTRE(object):
 
     def pure_discordance_matrix_eval(self):
         self.pure_discordance_matrix = self.discordance_matrix.sum(axis=1)-self.discordance_matrix.sum(axis=0)          
-            
+
     def solve(self):
         self.matrix_normalize()
         self.weighted_eval()
