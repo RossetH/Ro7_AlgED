@@ -13,6 +13,8 @@ class ELECTRE(object):
         self.wn_matrix = zeros([self.alternatives,self.criterias])
         self.concordance_matrix = zeros([self.alternatives,self.alternatives])
         self.discordance_matrix = zeros([self.alternatives,self.alternatives])
+        self.pure_concordance_matrix = zeros([self.alternatives,1])
+        self.pure_discordance_matrix = zeros([self.alternatives,1])        
 
     def matrix_normalize(self):
         #Evaluate the Eq.(11) denominator for each column
@@ -55,11 +57,19 @@ class ELECTRE(object):
                         tmp_max[0][j] = self.wn_matrix[b][j]-self.wn_matrix[a][j]
                 self.discordance_matrix[a][b] = tmp_max.max()/(absolute(tmp_abs).max())
 
+    def pure_concordance_matrix_eval(self):
+        self.pure_concordance_matrix = self.concordance_matrix.sum(axis=1)-self.concordance_matrix.sum(axis=0)
+
+    def pure_discordance_matrix_eval(self):
+        self.pure_discordance_matrix = self.discordance_matrix.sum(axis=1)-self.discordance_matrix.sum(axis=0)          
+            
     def solve(self):
         self.matrix_normalize()
         self.weighted_eval()
         self.concordance_matrix_eval()
         self.discordance_matrix_eval()
+        self.pure_concordance_matrix_eval()
+        self.pure_discordance_matrix_eval()
 
 matrix = array([[60, 0.40, 2540, 500, 990],
     [6.35,0.15,1016,3000,1041],
