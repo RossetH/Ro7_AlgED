@@ -1,4 +1,4 @@
-from numpy import array, power, sqrt, zeros
+from numpy import array, power, sqrt, zeros, absolute
 
 class ELECTRE(object):
     """docstring for ELimination and Et Chouce Translating REality (ELECTRE)"""
@@ -12,7 +12,7 @@ class ELECTRE(object):
         self.norm_matrix = zeros([self.alternatives,self.criterias])
         self.wn_matrix = zeros([self.alternatives,self.criterias])
         self.concordance_matrix = zeros([self.alternatives,self.alternatives])
-        self.disconcordance_matrix = zeros([self.alternatives,self.alternatives])
+        self.discordance_matrix = zeros([self.alternatives,self.alternatives])
 
     def matrix_normalize(self):
         #Evaluate the Eq.(11) denominator for each column
@@ -41,14 +41,25 @@ class ELECTRE(object):
                             elif self.wn_matrix[a][j] == self.wn_matrix[b][j]:
                                 self.concordance_matrix[a][b] += self.weights[j]*0.5
 
-    def disconcordance_matrix_eval(self):
-        pass
+    def discordance_matrix_eval(self):
+        for a in range(0,self.alternatives):
+            for b in range(0,self.alternatives):
+                tmp_max = zeros([1,self.criterias])
+                tmp_abs = zeros([1,self.criterias])                
+                if a==b:
+                    continue
+                for j in range(0,self.criterias):
+                    tmp_abs[0][j] = self.wn_matrix[b][j]-self.wn_matrix[a][j]
+                for j in range(0,self.criterias):
+                    if self.wn_matrix[b][j] > self.wn_matrix[a][j]:
+                        tmp_max[0][j] = self.wn_matrix[b][j]-self.wn_matrix[a][j]
+                self.discordance_matrix[a][b] = tmp_max.max()/(absolute(tmp_abs).max())
 
     def solve(self):
         self.matrix_normalize()
         self.weighted_eval()
         self.concordance_matrix_eval()
-        self.disconcordance_matrix_eval()
+        self.discordance_matrix_eval()
 
 matrix = array([[60, 0.40, 2540, 500, 990],
     [6.35,0.15,1016,3000,1041],
