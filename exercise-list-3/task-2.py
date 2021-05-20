@@ -74,8 +74,8 @@ class ELECTRE(object):
         self.pure_discordance_index_rank = empty_like(tmp)
         self.pure_discordance_index_rank[tmp] = arange(len(self.pure_discordance_index_rank))
         self.index_rank = (self.pure_concordance_index_rank + self.pure_concordance_index_rank)/2
-        tmp = self.index_rank
-        self.index_rank[tmp] = arange(len(self.pure_discordance_index_rank))
+        tmp = self.index_rank.argsort()
+        self.index_rank[tmp] = arange(len(self.index_rank))
 
     def solve(self):
         self.matrix_normalize()
