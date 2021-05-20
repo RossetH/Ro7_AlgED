@@ -86,7 +86,7 @@ class ELECTRE(object):
         self.pure_discordance_index_eval()
         self.rank()
 
-matrix = array([[60, 0.40, 2540, 500, 990],
+example_1_matrix = array([[60, 0.40, 2540, 500, 990],
     [6.35,0.15,1016,3000,1041],
     [6.8,0.10,1727.2,1500,1676],
     [10,0.20,1000,2000,965],
@@ -97,12 +97,26 @@ matrix = array([[60, 0.40, 2540, 500, 990],
 # correct. The MPS criteria for the robot no. 7
 # is 1778 instead of 177
 
-weights = array([0.036,0.192,0.326,0.326,0.120])
+example_1_weights = array([0.036,0.192,0.326,0.326,0.120])
 
-# repeatability (column 2) 
+# repeatability (criteria 2) 
 # is a non-beneficial attribute
-decision = ELECTRE(matrix,weights,non_benefitial_att=[1])
+example_1_decision = ELECTRE(example_1_matrix,example_1_weights,non_benefitial_att=[1])
 
-decision.solve()
+example_1_decision.solve()
 
-print(decision.index_rank)
+print(example_1_decision.index_rank)
+
+example_2_matrix = array([[1.8,90,9500,0.45,8,4],
+[1.4,80,5500,0.30,7,5],
+[0.8,70,4000,0.20,6,6],
+[0.8,60,4000,0.15,4,7]])
+
+example_2_weights = array([0.1860,0.1860,0.1396,0.1396,0.1860,0.1628])
+#cost and repeatability (criteria 3,4) 
+# is a non-beneficial attribute
+example_2_decision = ELECTRE(example_2_matrix,example_2_weights,non_benefitial_att=[2,3])
+
+example_2_decision.solve()
+
+print(example_2_decision.index_rank)
