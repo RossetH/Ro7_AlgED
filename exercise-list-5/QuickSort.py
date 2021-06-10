@@ -44,3 +44,14 @@ def quick_sort(nums):
             _quick_sort(items, split_index + 1, high)
 
     _quick_sort(nums, 0, len(nums) - 1)
+
+"""
+Here, the algorithm starts to differ from the original code on Stack Abuse.
+"""
+
+# List of random arrays. Each array contains 500 random
+# number, sampled without replacement.
+randomarraylist = []
+for i in range(0,100):
+    array = random.sample(range(0,5000),500)
+    randomarraylist.append(array)    
