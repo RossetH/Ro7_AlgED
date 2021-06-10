@@ -48,10 +48,12 @@ def quick_sort(nums):
 """
 Here, the algorithm starts to differ from the original code on Stack Abuse.
 """
+import timeit, random
+from numpy import array
 
 # List of random arrays. Each array contains 500 random
 # number, sampled without replacement.
-randomarraylist = []
+randomlist_list = []
 for i in range(0,100):
-    array = random.sample(range(0,5000),500)
-    randomarraylist.append(array)    
+    random_list = random.sample(range(0,5000),500)
+    randomlist_list.append(random_list)
