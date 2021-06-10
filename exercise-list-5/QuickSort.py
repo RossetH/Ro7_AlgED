@@ -14,7 +14,7 @@ def partition(nums, low, high):
     # the first element or the last element. Sometimes the median value becomes
     # the pivot, or a random one. There are many more strategies that can be
     # chosen or created.
-    pivot = nums[high-1]
+    pivot = nums[(low + high) // 2]
     i = low - 1
     j = high + 1
     while True:
