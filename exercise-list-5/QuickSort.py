@@ -57,3 +57,16 @@ randomlist_list = []
 for i in range(0,100):
     random_list = random.sample(range(0,5000),500)
     randomlist_list.append(random_list)
+
+class QuickSortAlgorithmTest(object):
+    """docstring for """
+
+    def __init__(self,random_list):
+        self.random_list=random_list
+    
+    def test(self):
+        t = timeit.Timer('quick_sort(randomlist_list[0])', globals=globals())
+        a = t.repeat(repeat=100,number=1)        
+        return array(a).mean()
+
+QuickSortAlgorithmTest(randomlist_list[0]).test()
