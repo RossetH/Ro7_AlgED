@@ -50,6 +50,7 @@ Here, the algorithm starts to differ from the original code on Stack Abuse.
 """
 import timeit, random
 from numpy import array
+import pandas as pd
 
 # List of random arrays. Each array contains 500 random
 # number, sampled without replacement.
@@ -58,15 +59,14 @@ for i in range(0,100):
     random_list = random.sample(range(0,5000),500)
     randomlist_list.append(random_list)
 
-class QuickSortAlgorithmTest(object):
-    """docstring for """
-
-    def __init__(self,random_list):
-        self.random_list=random_list
-    
-    def test(self):
-        t = timeit.Timer('quick_sort(randomlist_list[0])', globals=globals())
-        a = t.repeat(repeat=100,number=1)        
-        return array(a).mean()
-
-QuickSortAlgorithmTest(randomlist_list[0]).test()
+results=[]
+for list in randomlist_list:
+    t = timeit.Timer('quick_sort(list)', globals=globals())
+    timeramdom = array(t.repeat(repeat=100,number=1)).mean()
+    t = timeit.Timer('quick_sort(list)', globals=globals())
+    timecresc = array(t.repeat(repeat=100,number=1)).mean()
+    list.sort(reverse=True)
+    t = timeit.Timer('quick_sort(list)', globals=globals())
+    timedecr = array(t.repeat(repeat=100,number=1)).mean()        
+    test_partial = [timeramdom,timecresc,timedecr]
+    results.append(test_partial)
