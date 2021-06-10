@@ -14,7 +14,7 @@ def partition(nums, low, high):
     # the first element or the last element. Sometimes the median value becomes
     # the pivot, or a random one. There are many more strategies that can be
     # chosen or created.
-    pivot = nums[(low + high) // 2]
+    pivot = nums[high-1]
     i = low - 1
     j = high + 1
     while True:
@@ -48,6 +48,7 @@ def quick_sort(nums):
 """
 Here, the algorithm starts to differ from the original code on Stack Abuse.
 """
+
 import timeit, random
 from numpy import array
 import pandas as pd
@@ -70,3 +71,8 @@ for list in randomlist_list:
     timedecr = array(t.repeat(repeat=100,number=1)).mean()        
     test_partial = [timeramdom,timecresc,timedecr]
     results.append(test_partial)
+
+data = pd.DataFrame(results)
+data.mean()
+data.std()
+data.to_csv('resultados_last.csv')
