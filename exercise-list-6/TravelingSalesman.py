@@ -25,8 +25,8 @@ class NearestNeighbour(object):
         self.path.append(self.initial_node)
         while len(self.path) < self.n:
             node = self.path[len(self.path)-1]
-            neighbours_costs = self.cost_matrix[node-1]
-            nearest_neighbour = self.get_position_of(neighbours_costs,self.minimum_non_zero_value(neighbours_costs))
+            neighbours_distance = self.cost_matrix[node-1]
+            nearest_neighbour = self.get_position_of(neighbours_distance,self.minimum_non_zero_value(neighbours_distance))
             self.cost_matrix[:,node-1].fill(0)
             self.path.append(nearest_neighbour+1)
         self.path.append(self.initial_node)
