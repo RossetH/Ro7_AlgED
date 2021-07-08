@@ -12,6 +12,8 @@ class NearestNeighbour(object):
         self.cost_matrix = np.array(cost_matrix)
         self.n = self.cost_matrix.shape[0]
         self.path = []
+        self.path_costs = []
+        self.total_cost = 0
         pass
 
     def minimum_non_zero_value(self,array):
@@ -20,30 +22,46 @@ class NearestNeighbour(object):
 
     def get_position_of(self,array,value):
         return np.where(array == value)[0][0]     
-
-    def solve(self):
+    
+    def get_nearest_neighbour(self, node):
+        neighbours_distance = self.cost_matrix[node-1]
+        nearest_neighbour = self.get_position_of(
+            value = self.minimum_non_zero_value(neighbours_distance),
+            array = neighbours_distance)
+        return nearest_neighbour
+    
+    def get_path(self):
         self.path.append(self.initial_node)
         while len(self.path) < self.n:
-            node = self.path[len(self.path)-1]
-            neighbours_distance = self.cost_matrix[node-1]
-            nearest_neighbour = self.get_position_of(neighbours_distance,self.minimum_non_zero_value(neighbours_distance))
-            self.cost_matrix[:,node-1].fill(0)
+            actual_node = self.path[len(self.path)-1]
+            nearest_neighbour = self.get_nearest_neighbour(actual_node)
+            self.cost_matrix[:,actual_node-1].fill(0)
             self.path.append(nearest_neighbour+1)
         self.path.append(self.initial_node)
 
+    def get_total_distance(self):       
+        for i in range(0,len(self.path)-1):
+            self.path_costs.append(
+                self.cost_matrix[self.path[i]-1,self.path[i+1]-1]
+            )
+        self.total_cost = np.array(self.path_costs).sum()
+        pass     
+
+    def solve(self):
+        self.get_path()
+        self.get_total_distance()
+    
 if __name__ == '__main__':
 
     cost_matrix = [[0,2,1,7,4],
                    [2,0,3,5,3],
                    [1,3,0,3,2],
                    [7,5,3,0,4],
-                   [4,3,2,4,0]]
-    
+                   [4,3,2,4,0]] 
     initial_node = 1
-
     example = NearestNeighbour(initial_node=1,
                                cost_matrix = cost_matrix)
-
     example.solve()
+    print(f'The path is: {example.path}\n',
+        f'With a total cost of {example.total_cost}')  
 
-    print(example.path)
