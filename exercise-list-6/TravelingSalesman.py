@@ -35,8 +35,8 @@ class NearestNeighbour(object):
         while len(self.path) < self.n:
             actual_node = self.path[len(self.path)-1]
             nearest_neighbour = self.get_nearest_neighbour(actual_node)
-            self.cost_matrix_array[:,actual_node-1].fill(0) 
             self.path.append(nearest_neighbour+1)
+            self.cost_matrix_array[:,actual_node-1].fill(0) 
         self.path.append(self.initial_node)
 
     def get_total_distance(self):       
